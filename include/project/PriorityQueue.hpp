@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <functional>
 #include <stdexcept>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -29,6 +30,8 @@ public:
     bool validHeap() const noexcept;
 private:
     std::vector<EntryPtr> heap_;
+    // Retain removed allocations so a stale raw handle cannot refer to a new entry.
+    std::unordered_set<EntryPtr> owned_;
     Compare comp_;
     std::size_t nextId_;
     bool less(EntryPtr a, EntryPtr b) const;
